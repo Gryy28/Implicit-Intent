@@ -1,6 +1,7 @@
 package com.si5a.implicitintent;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ShareCompat;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -12,7 +13,7 @@ import android.widget.EditText;
 public class MainActivity extends AppCompatActivity {
     EditText etUrl,etLokasi,etTeks;
     Button btnBukaWebsite,btnBukaLokasi,btnBagikanTeks;
-
+    String getWebsite,getLokasi,getTeks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         btnBukaWebsite=findViewById(R.id.btn_buka_website);
         btnBagikanTeks=findViewById(R.id.btn_bagikan_teks);
         btnBukaLokasi=findViewById(R.id.btn_buka_lokasi);
+
 
         //Membuat OnClick
         btnBukaWebsite.setOnClickListener(new View.OnClickListener() {
@@ -46,13 +48,20 @@ public class MainActivity extends AppCompatActivity {
         btnBukaLokasi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                getLokasi=etLokasi.getText().toString();
 
+                Uri location = Uri.parse("geo:0,0?q"+getLokasi);
+            Intent bukalokasi = new Intent(Intent.ACTION_VIEW,location);
+            startActivity(bukalokasi);
             }
         });
         //Membuat OnClick
         btnBagikanTeks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                getTeks = etTeks.getText().toString();
+                String mimeType ="text/plain";
+                new ShareCompat.IntentBuilder(MainActivity.this).setType(mimeType).setChooserTitle("Bagikan Teks Ini").setText(getTeks).startChooser();
 
             }
         });
